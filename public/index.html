@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Display and Capture</title>
+  <style>
+    #preview {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+    video {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+    #controls {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Image Display and Webcam Capture</h1>
+
+  <h2>Image from API:</h2>
+  <img id="apiImage" src="" alt="Image from API">
+
+  <h2>Take a Picture:</h2>
+  <video id="video" autoplay></video>
+  <canvas id="canvas" style="display: none;"></canvas>
+  <div id="controls">
+    <button id="capture">Capture</button>
+    <button id="save" disabled>Save</button>
+  </div>
+  <img id="preview" src="" alt="Captured Image Preview">
+
+  <script>
+    // Fetch and display the image from /images API
+    async function fetchImage() {
+      try {
+        const response = await fetch('/images');
+        const data = await response.json();
+        if (data.images && data.images.length > 0) {
+          document.getElementById('apiImage').src = `/images/${data.images[0]}`;
+        } else {
+          alert('No images found in the API response.');
+        }
+      } catch (err) {
+        console.error('Error fetching the image:', err);
+        alert('Failed to fetch image from API.');
+      }
+    }
+
+    // Access the user's webcam
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const preview = document.getElementById('preview');
+    const captureButton = document.getElementById('capture');
+    const saveButton = document.getElementById('save');
+
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        console.error('Error accessing webcam:', err);
+        alert('Failed to access the webcam.');
+      }
+    }
+
+    // Capture the image from the webcam
+    captureButton.addEventListener('click', () => {
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL('image/png');
+      preview.src = imageData;
+      saveButton.disabled = false;
+    });
+
+    // Save the captured image (for demonstration purposes, we just log it)
+    saveButton.addEventListener('click', () => {
+      alert('Image captured and saved (simulate saving process).');
+    });
+
+    startWebcam();
+  </script>
+</body>
+</html>
