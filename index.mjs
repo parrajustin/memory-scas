@@ -30,7 +30,8 @@ If you get a date that looks like "Mar 911" remove this from all output and don'
 For context information this refers to all the rest of the text not related to the date, Just combine
 this text to gether and remove any references to film products such as "Kodak", "FujiFilm" or other.
 There also may be random asortment of other text like letters or numbers, if it doesn't seem like a
-name or some context information drop it. If there is the " char in context it must be escaped with \\ so it'll be \\".`
+name or some context information drop it. If there is a double quotation mark (example: ") replace 
+it with a single quote mark (example: ').`
 
 const outputSchema = z.object({
   year: z.number().describe("The year of the picture in full number format. For example 2005 not 05. Expect integer value."),
