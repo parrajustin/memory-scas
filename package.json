@@ -9,8 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@genkit-ai/googleai": "^0.9.12",
-    "fastify": "^5.2.0",
-    "genkit": "^0.9.12"
+    "@genkit-ai/googleai": "0.9.12",
+    "async": "3.2.6",
+    "genkit": "0.9.12"
   }
 }
